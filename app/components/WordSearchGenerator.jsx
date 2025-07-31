@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Search, Plus, X, RotateCcw } from "lucide-react";
+import { Search, Plus, X, RotateCcw, Eye } from "lucide-react";
 
 const WordSearchGenerator = () => {
   const [words, setWords] = useState([]);
@@ -13,6 +13,7 @@ const WordSearchGenerator = () => {
   const [selectedCells, setSelectedCells] = useState([]);
   const [isSelecting, setIsSelecting] = useState(false);
   const [showPuzzle, setShowPuzzle] = useState(false);
+  const [revealedWord, setRevealedWord] = useState(null);
 
   const directions = [
     [0, 1], // horizontal
@@ -202,6 +203,7 @@ const WordSearchGenerator = () => {
     setFoundWords(new Set());
     setSelectedCells([]);
     setShowPuzzle(false);
+    setRevealedWord(null);
   };
 
   const isCellSelected = (row, col) => {
@@ -214,6 +216,26 @@ const WordSearchGenerator = () => {
         placedWord.found &&
         placedWord.positions.some((pos) => pos[0] === row && pos[1] === col)
     );
+  };
+
+  const isCellInRevealedWord = (row, col) => {
+    if (!revealedWord) return false;
+    const revealedPlacedWord = placedWords.find(
+      (pw) => pw.word === revealedWord
+    );
+    return (
+      revealedPlacedWord &&
+      revealedPlacedWord.positions.some(
+        (pos) => pos[0] === row && pos[1] === col
+      )
+    );
+  };
+  const revealWord = (wordToReveal) => {
+    setRevealedWord(wordToReveal);
+    // Remove highlight after 2 seconds
+    setTimeout(() => {
+      setRevealedWord(null);
+    }, 2000);
   };
 
   return (
@@ -344,13 +366,28 @@ const WordSearchGenerator = () => {
                   {placedWords.map((placedWord, index) => (
                     <div
                       key={index}
-                      className={`px-3 py-2 rounded-lg text-center font-medium transition-colors ${
+                      className={`px-3 py-2 rounded-lg text-center font-medium transition-colors relative ${
                         foundWords.has(placedWord.word)
                           ? "bg-green-100 text-green-800 line-through"
-                          : "bg-gray-100 text-gray-700"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
                       }`}
+                      onClick={() =>
+                        !foundWords.has(placedWord.word) &&
+                        revealWord(placedWord.word)
+                      }
+                      title={
+                        !foundWords.has(placedWord.word)
+                          ? "Click to reveal this word"
+                          : ""
+                      }
                     >
                       {placedWord.word}
+                      {!foundWords.has(placedWord.word) && (
+                        <Eye
+                          size={12}
+                          className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        />
+                      )}
                     </div>
                   ))}
                 </div>
@@ -385,6 +422,8 @@ const WordSearchGenerator = () => {
                           className={`w-8 h-8 flex items-center justify-center text-sm font-bold border border-gray-300 cursor-pointer transition-all ${
                             isCellSelected(rowIndex, colIndex)
                               ? "bg-blue-200 border-blue-400"
+                              : isCellInRevealedWord(rowIndex, colIndex)
+                              ? "bg-yellow-200 border-yellow-400"
                               : isCellInFoundWord(rowIndex, colIndex)
                               ? "bg-green-200 border-green-400"
                               : "bg-white hover:bg-gray-100"
