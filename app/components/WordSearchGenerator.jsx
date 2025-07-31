@@ -346,22 +346,13 @@ const WordSearchGenerator = () => {
                   <h3 className="text-lg font-semibold text-gray-800">
                     Find These Words
                   </h3>
-                  <button
-                    onClick={resetPuzzle}
-                    className="px-3 py-1 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors flex items-center gap-2 text-sm"
-                  >
-                    <RotateCcw size={16} />
-                    New Puzzle
-                  </button>
                 </div>
-
                 <div className="text-center mb-4">
                   <div className="text-2xl font-bold text-blue-600">
                     {foundWords.size}/{placedWords.length}
                   </div>
                   <div className="text-sm text-gray-500">Words Found</div>
                 </div>
-
                 <div className="space-y-2">
                   {placedWords.map((placedWord, index) => (
                     <div
@@ -401,12 +392,19 @@ const WordSearchGenerator = () => {
                     </div>
                   )}
               </div>
+              <button
+                onClick={resetPuzzle}
+                className="w-full px-4 py-2 mt-8 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center gap-2"
+              >
+                <RotateCcw size={16} />
+                New Puzzle
+              </button>
             </div>
 
             {/* Grid Section */}
             <div className="lg:col-span-3">
               <div className="bg-white rounded-xl shadow-lg p-6">
-                <h2 className="text-xl font-semibold mb-4 text-gray-800">
+                <h2 className="text-xl text-center font-semibold mb-4 text-gray-800">
                   Word Search Puzzle
                 </h2>
                 <div className="flex justify-center">
