@@ -12,6 +12,7 @@ const WordSearchGenerator = () => {
   const [foundWords, setFoundWords] = useState(new Set());
   const [selectedCells, setSelectedCells] = useState([]);
   const [isSelecting, setIsSelecting] = useState(false);
+  const [showPuzzle, setShowPuzzle] = useState(false);
 
   const directions = [
     [0, 1], // horizontal
@@ -120,6 +121,7 @@ const WordSearchGenerator = () => {
     setPlacedWords(newPlacedWords);
     setFoundWords(new Set());
     setSelectedCells([]);
+    setShowPuzzle(true);
   };
 
   const getCellKey = (row, col) => `${row}-${col}`;
@@ -199,6 +201,7 @@ const WordSearchGenerator = () => {
     setPlacedWords([]);
     setFoundWords(new Set());
     setSelectedCells([]);
+    setShowPuzzle(false);
   };
 
   const isCellSelected = (row, col) => {
@@ -225,34 +228,34 @@ const WordSearchGenerator = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Word Input Section */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-semibold mb-4 text-gray-800">
-                Add Words
+        {!showPuzzle ? (
+          // Word Input Screen
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">
+                Add Your Words
               </h2>
 
-              <div className="flex gap-2 mb-4">
+              <div className="flex gap-2 mb-6">
                 <input
                   type="text"
                   value={currentWord}
                   onChange={(e) => setCurrentWord(e.target.value.toUpperCase())}
                   onKeyPress={(e) => e.key === "Enter" && addWord()}
                   placeholder="Enter a word..."
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
                   maxLength="12"
                 />
                 <button
                   onClick={addWord}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                  className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                 >
-                  <Plus size={20} />
+                  <Plus size={24} />
                 </button>
               </div>
 
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="mb-6">
+                <label className="block text-lg font-medium text-gray-700 mb-3">
                   Grid Size: {gridSize}x{gridSize}
                 </label>
                 <input
@@ -261,56 +264,83 @@ const WordSearchGenerator = () => {
                   max="20"
                   value={gridSize}
                   onChange={(e) => setGridSize(parseInt(e.target.value))}
-                  className="w-full"
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 />
+                <div className="flex justify-between text-sm text-gray-500 mt-1">
+                  <span>10x10</span>
+                  <span>20x20</span>
+                </div>
               </div>
 
-              <div className="space-y-2 mb-6">
-                {words.map((word, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg"
-                  >
-                    <span className="font-medium text-gray-700">{word}</span>
-                    <button
-                      onClick={() => removeWord(word)}
-                      className="text-red-500 hover:text-red-700 transition-colors"
-                    >
-                      <X size={16} />
-                    </button>
+              {words.length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-medium text-gray-700 mb-3">
+                    Your Words ({words.length})
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {words.map((word, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-lg"
+                      >
+                        <span className="font-medium text-gray-700">
+                          {word}
+                        </span>
+                        <button
+                          onClick={() => removeWord(word)}
+                          className="text-red-500 hover:text-red-700 transition-colors"
+                        >
+                          <X size={18} />
+                        </button>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
 
-              <div className="space-y-3">
-                <button
-                  onClick={generateGrid}
-                  disabled={words.length === 0}
-                  className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
-                >
-                  <Search size={20} />
-                  Generate Puzzle
-                </button>
+              <button
+                onClick={generateGrid}
+                disabled={words.length === 0}
+                className="w-full px-6 py-4 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-3 text-lg font-semibold"
+              >
+                <Search size={24} />
+                Generate Word Search Puzzle
+              </button>
 
-                {grid.length > 0 && (
+              {words.length === 0 && (
+                <p className="text-center text-gray-500 mt-4">
+                  Add at least one word to generate your puzzle
+                </p>
+              )}
+            </div>
+          </div>
+        ) : (
+          // Puzzle Screen
+          <div className="grid lg:grid-cols-4 gap-8">
+            {/* Word List Sidebar */}
+            <div className="lg:col-span-1">
+              <div className="bg-white rounded-xl shadow-lg p-6 sticky top-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    Find These Words
+                  </h3>
                   <button
                     onClick={resetPuzzle}
-                    className="w-full px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center gap-2"
+                    className="px-3 py-1 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors flex items-center gap-2 text-sm"
                   >
-                    <RotateCcw size={20} />
-                    Reset Puzzle
+                    <RotateCcw size={16} />
+                    New Puzzle
                   </button>
-                )}
-              </div>
-            </div>
+                </div>
 
-            {/* Word List */}
-            {placedWords.length > 0 && (
-              <div className="bg-white rounded-xl shadow-lg p-6 mt-6">
-                <h3 className="text-lg font-semibold mb-4 text-gray-800">
-                  Find These Words ({foundWords.size}/{placedWords.length})
-                </h3>
-                <div className="grid grid-cols-1 gap-2">
+                <div className="text-center mb-4">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {foundWords.size}/{placedWords.length}
+                  </div>
+                  <div className="text-sm text-gray-500">Words Found</div>
+                </div>
+
+                <div className="space-y-2">
                   {placedWords.map((placedWord, index) => (
                     <div
                       key={index}
@@ -324,13 +354,20 @@ const WordSearchGenerator = () => {
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
-          </div>
 
-          {/* Grid Section */}
-          <div className="lg:col-span-2">
-            {grid.length > 0 ? (
+                {foundWords.size === placedWords.length &&
+                  placedWords.length > 0 && (
+                    <div className="mt-6 text-center">
+                      <div className="px-4 py-3 bg-green-100 text-green-800 rounded-lg font-semibold text-sm">
+                        🎉 All words found!
+                      </div>
+                    </div>
+                  )}
+              </div>
+            </div>
+
+            {/* Grid Section */}
+            <div className="lg:col-span-3">
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <h2 className="text-xl font-semibold mb-4 text-gray-800">
                   Word Search Puzzle
@@ -366,29 +403,10 @@ const WordSearchGenerator = () => {
                     )}
                   </div>
                 </div>
-
-                {foundWords.size === placedWords.length &&
-                  placedWords.length > 0 && (
-                    <div className="mt-6 text-center">
-                      <div className="inline-flex items-center px-6 py-3 bg-green-100 text-green-800 rounded-lg font-semibold">
-                        🎉 Congratulations! You found all the words!
-                      </div>
-                    </div>
-                  )}
               </div>
-            ) : (
-              <div className="bg-white rounded-xl shadow-lg p-12 text-center">
-                <Search size={64} className="mx-auto text-gray-300 mb-4" />
-                <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                  No Puzzle Yet
-                </h3>
-                <p className="text-gray-500">
-                  Add some words on the left and generate your puzzle!
-                </p>
-              </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
