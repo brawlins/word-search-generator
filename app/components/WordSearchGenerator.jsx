@@ -409,32 +409,34 @@ const WordSearchGenerator = () => {
                 </h2>
                 <div className="flex justify-center">
                   <div
-                    className="inline-grid gap-1 p-4 bg-gray-50 rounded-lg select-none"
+                    className="inline-grid p-4 bg-gray-50 rounded-lg select-none"
                     style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}
                     onMouseLeave={() => setIsSelecting(false)}
                   >
                     {grid.map((row, rowIndex) =>
                       row.map((cell, colIndex) => (
-                        <div
-                          key={getCellKey(rowIndex, colIndex)}
-                          className={`w-8 h-8 flex items-center justify-center text-sm font-bold border border-gray-300 cursor-pointer transition-all ${
-                            isCellSelected(rowIndex, colIndex)
-                              ? "bg-blue-200 border-blue-400"
-                              : isCellInRevealedWord(rowIndex, colIndex)
-                              ? "bg-yellow-200 border-yellow-400"
-                              : isCellInFoundWord(rowIndex, colIndex)
-                              ? "bg-green-200 border-green-400"
-                              : "bg-white hover:bg-gray-100"
-                          }`}
-                          onMouseDown={() =>
-                            handleMouseDown(rowIndex, colIndex)
-                          }
-                          onMouseEnter={() =>
-                            handleMouseEnter(rowIndex, colIndex)
-                          }
-                          onMouseUp={handleMouseUp}
-                        >
-                          {cell}
+                        <div className="bg-gray-600">
+                          <div
+                            key={getCellKey(rowIndex, colIndex)}
+                            className={`w-8 h-8 flex items-center justify-center text-sm font-bold text-gray border-none cursor-pointer transition-all ${
+                              isCellSelected(rowIndex, colIndex)
+                                ? "bg-blue-500/50"
+                                : isCellInRevealedWord(rowIndex, colIndex)
+                                ? "bg-yellow-200/50"
+                                : isCellInFoundWord(rowIndex, colIndex)
+                                ? "bg-green-500/50"
+                                : "bg-gray-600 hover:bg-gray-700"
+                            }`}
+                            onMouseDown={() =>
+                              handleMouseDown(rowIndex, colIndex)
+                            }
+                            onMouseEnter={() =>
+                              handleMouseEnter(rowIndex, colIndex)
+                            }
+                            onMouseUp={handleMouseUp}
+                          >
+                            {cell}
+                          </div>
                         </div>
                       ))
                     )}
