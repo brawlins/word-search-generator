@@ -270,7 +270,7 @@ const WordSearchGenerator = () => {
                 />
                 <button
                   onClick={addWord}
-                  className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                  className="px-6 py-3 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors"
                 >
                   <Plus size={24} />
                 </button>
@@ -391,14 +391,14 @@ const WordSearchGenerator = () => {
                       </div>
                     </div>
                   )}
+                <button
+                  onClick={resetPuzzle}
+                  className="w-full px-4 py-2 mt-8 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors flex items-center justify-center gap-2"
+                >
+                  <RotateCcw size={16} />
+                  New Puzzle
+                </button>
               </div>
-              <button
-                onClick={resetPuzzle}
-                className="w-full px-4 py-2 mt-8 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors flex items-center justify-center gap-2"
-              >
-                <RotateCcw size={16} />
-                New Puzzle
-              </button>
             </div>
 
             {/* Grid Section */}
