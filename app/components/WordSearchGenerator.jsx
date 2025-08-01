@@ -239,13 +239,13 @@ const WordSearchGenerator = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div className="min-h-screen bg-gray-900 p-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+          <h1 className="text-4xl font-bold text-gray mb-2">
             Word Search Generator
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-300">
             Create your own custom word search puzzle
           </p>
         </div>
@@ -253,8 +253,8 @@ const WordSearchGenerator = () => {
         {!showPuzzle ? (
           // Word Input Screen
           <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-xl shadow-lg p-8">
-              <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">
+            <div className="bg-gray-800 rounded-xl shadow-lg p-8">
+              <h2 className="text-2xl font-semibold mb-6 text-gray text-center">
                 Add Your Words
               </h2>
 
@@ -277,7 +277,7 @@ const WordSearchGenerator = () => {
               </div>
 
               <div className="mb-6">
-                <label className="block text-lg font-medium text-gray-700 mb-3">
+                <label className="block text-lg font-medium text-gray-300 mb-3">
                   Grid Size: {gridSize}x{gridSize}
                 </label>
                 <input
@@ -288,7 +288,7 @@ const WordSearchGenerator = () => {
                   onChange={(e) => setGridSize(parseInt(e.target.value))}
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 />
-                <div className="flex justify-between text-sm text-gray-500 mt-1">
+                <div className="flex justify-between text-sm text-gray-400 mt-1">
                   <span>10x10</span>
                   <span>20x20</span>
                 </div>
@@ -296,16 +296,16 @@ const WordSearchGenerator = () => {
 
               {words.length > 0 && (
                 <div className="mb-6">
-                  <h3 className="text-lg font-medium text-gray-700 mb-3">
+                  <h3 className="text-lg font-medium text-gray-300 mb-3">
                     Your Words ({words.length})
                   </h3>
                   <div className="grid grid-cols-2 gap-3">
                     {words.map((word, index) => (
                       <div
                         key={index}
-                        className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-lg"
+                        className="flex items-center justify-between bg-gray-700 px-4 py-3 rounded-lg"
                       >
-                        <span className="font-medium text-gray-700">
+                        <span className="font-medium text-gray-200">
                           {word}
                         </span>
                         <button
@@ -323,14 +323,14 @@ const WordSearchGenerator = () => {
               <button
                 onClick={generateGrid}
                 disabled={words.length === 0}
-                className="w-full px-6 py-4 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-3 text-lg font-semibold"
+                className="w-full px-6 py-4 bg-green-700 text-white rounded-lg hover:bg-green-800 disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-3 text-lg font-semibold"
               >
                 <Search size={24} />
                 Generate Word Search Puzzle
               </button>
 
               {words.length === 0 && (
-                <p className="text-center text-gray-500 mt-4">
+                <p className="text-center text-gray-400 mt-4">
                   Add at least one word to generate your puzzle
                 </p>
               )}
@@ -341,17 +341,17 @@ const WordSearchGenerator = () => {
           <div className="grid lg:grid-cols-4 gap-8">
             {/* Word List Sidebar */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-xl shadow-lg p-6 sticky top-6">
+              <div className="bg-gray-800 rounded-xl shadow-lg p-6 sticky top-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">
+                  <h3 className="text-lg font-semibold text-gray">
                     Find These Words
                   </h3>
                 </div>
                 <div className="text-center mb-4">
-                  <div className="text-2xl font-bold text-blue-600">
+                  <div className="text-2xl font-bold text-green-700">
                     {foundWords.size}/{placedWords.length}
                   </div>
-                  <div className="text-sm text-gray-500">Words Found</div>
+                  <div className="text-sm text-gray-300">Words Found</div>
                 </div>
                 <div className="space-y-2">
                   {placedWords.map((placedWord, index) => (
@@ -359,8 +359,8 @@ const WordSearchGenerator = () => {
                       key={index}
                       className={`px-3 py-2 rounded-lg text-center font-medium transition-colors relative ${
                         foundWords.has(placedWord.word)
-                          ? "bg-green-100 text-green-800 line-through"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
+                          ? "bg-green-700 text-green-200 line-through"
+                          : "bg-gray-600 text-gray-200 hover:bg-gray-700 cursor-pointer"
                       }`}
                       onClick={() =>
                         !foundWords.has(placedWord.word) &&
@@ -394,7 +394,7 @@ const WordSearchGenerator = () => {
               </div>
               <button
                 onClick={resetPuzzle}
-                className="w-full px-4 py-2 mt-8 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center gap-2"
+                className="w-full px-4 py-2 mt-8 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors flex items-center justify-center gap-2"
               >
                 <RotateCcw size={16} />
                 New Puzzle
@@ -403,19 +403,19 @@ const WordSearchGenerator = () => {
 
             {/* Grid Section */}
             <div className="lg:col-span-3">
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h2 className="text-xl text-center font-semibold mb-4 text-gray-800">
+              <div className="bg-gray-800 rounded-xl shadow-lg p-6 pb-9">
+                <h2 className="text-xl text-center font-semibold mb-4 text-gray">
                   Word Search Puzzle
                 </h2>
                 <div className="flex justify-center">
                   <div
-                    className="inline-grid p-4 bg-gray-50 rounded-lg select-none"
+                    className="inline-grid p-4 bg-gray-700 rounded-lg select-none"
                     style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}
                     onMouseLeave={() => setIsSelecting(false)}
                   >
                     {grid.map((row, rowIndex) =>
                       row.map((cell, colIndex) => (
-                        <div className="bg-gray-600">
+                        <div>
                           <div
                             key={getCellKey(rowIndex, colIndex)}
                             className={`w-8 h-8 flex items-center justify-center text-sm font-bold text-gray border-none cursor-pointer transition-all ${
@@ -425,7 +425,7 @@ const WordSearchGenerator = () => {
                                 ? "bg-yellow-200/50"
                                 : isCellInFoundWord(rowIndex, colIndex)
                                 ? "bg-green-500/50"
-                                : "bg-gray-600 hover:bg-gray-700"
+                                : "bg-gray-700 hover:bg-gray-800"
                             }`}
                             onMouseDown={() =>
                               handleMouseDown(rowIndex, colIndex)
