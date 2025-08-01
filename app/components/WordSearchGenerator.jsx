@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback } from "react";
 import { Search, Plus, X, RotateCcw, Eye } from "lucide-react";
+import clsx from "clsx";
 
 const WordSearchGenerator = () => {
   const [words, setWords] = useState([]);
@@ -241,13 +242,24 @@ const WordSearchGenerator = () => {
   return (
     <div className="min-h-screen bg-gray-900 p-6">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray mb-2">
-            Word Search Generator
-          </h1>
-          <p className="text-gray-300">
-            Create your own custom word search puzzle
-          </p>
+        <div
+          className={clsx(
+            "grid",
+            showPuzzle && "lg:grid-cols-4",
+            "gap-8",
+            "text-center",
+            "mb-8"
+          )}
+        >
+          <div></div>
+          <div className={clsx(showPuzzle && "col-span-3")}>
+            <h1 className="text-4xl font-bold text-gray mb-2">
+              Word Search Generator
+            </h1>
+            <p className="text-gray-300">
+              Create your own custom word search puzzle
+            </p>
+          </div>
         </div>
 
         {!showPuzzle ? (
@@ -415,9 +427,8 @@ const WordSearchGenerator = () => {
                   >
                     {grid.map((row, rowIndex) =>
                       row.map((cell, colIndex) => (
-                        <div>
+                        <div key={getCellKey(rowIndex, colIndex)}>
                           <div
-                            key={getCellKey(rowIndex, colIndex)}
                             className={`w-8 h-8 flex items-center justify-center text-sm font-bold text-gray border-none cursor-pointer transition-all ${
                               isCellSelected(rowIndex, colIndex)
                                 ? "bg-blue-500/50"
