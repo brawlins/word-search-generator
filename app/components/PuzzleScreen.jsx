@@ -7,7 +7,6 @@ export default function PuzzleScreen({
   placedWords,
   foundWords,
   selectedCells,
-  isSelecting,
   revealedWord,
   onMouseDown,
   onMouseEnter,
