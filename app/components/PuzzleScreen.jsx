@@ -48,12 +48,12 @@ export default function PuzzleScreen({
       <div className="lg:col-span-1">
         <div className="bg-gray-800 rounded-xl shadow-lg p-6 sticky top-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray">
+            <h3 className="text-lg font-semibold text-gray-100">
               Find These Words
             </h3>
           </div>
           <div className="text-center mb-4">
-            <div className="text-2xl font-bold text-green-700">
+            <div className="text-2xl font-bold text-green-400">
               {foundWords.size}/{placedWords.length}
             </div>
             <div className="text-sm text-gray-300">Words Found</div>
@@ -90,7 +90,7 @@ export default function PuzzleScreen({
 
           {foundWords.size === placedWords.length && placedWords.length > 0 && (
             <div className="mt-6 text-center">
-              <div className="px-4 py-3 bg-green-100 text-green-800 rounded-lg font-semibold text-sm">
+              <div className="px-4 py-3 bg-green-700 text-green-100 rounded-lg font-semibold text-sm">
                 🎉 All words found!
               </div>
             </div>
@@ -108,7 +108,7 @@ export default function PuzzleScreen({
       {/* Grid Section */}
       <div className="lg:col-span-3">
         <div className="bg-gray-800 rounded-xl shadow-lg p-6 pb-9">
-          <h2 className="text-xl text-center font-semibold mb-4 text-gray">
+          <h2 className="text-xl text-center font-semibold mb-4 text-gray-100">
             Word Search Puzzle
           </h2>
           <div className="flex justify-center">
@@ -119,16 +119,16 @@ export default function PuzzleScreen({
             >
               {grid.map((row, rowIndex) =>
                 row.map((cell, colIndex) => (
-                  <div key={getCellKey(rowIndex, colIndex)}>
+                  <div key={`${rowIndex}-${colIndex}`}>
                     <div
-                      className={`w-8 h-8 flex items-center justify-center text-sm font-bold text-gray border-none cursor-pointer transition-all ${
+                      className={`w-8 h-8 flex items-center justify-center text-sm font-bold text-gray-100 border-none cursor-pointer transition-all ${
                         isCellSelected(rowIndex, colIndex)
                           ? "bg-blue-500/50"
                           : isCellInRevealedWord(rowIndex, colIndex)
-                          ? "bg-yellow-200/50"
+                          ? "bg-yellow-400/50"
                           : isCellInFoundWord(rowIndex, colIndex)
                           ? "bg-green-500/50"
-                          : "bg-gray-700 hover:bg-gray-800"
+                          : "bg-gray-700 hover:bg-gray-600"
                       }`}
                       onMouseDown={() => onMouseDown(rowIndex, colIndex)}
                       onMouseEnter={() => onMouseEnter(rowIndex, colIndex)}
