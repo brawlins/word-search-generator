@@ -90,7 +90,7 @@ export default function PuzzleScreen({
 
           {foundWords.size === placedWords.length && placedWords.length > 0 && (
             <div className="mt-6 text-center">
-              <div className="px-4 py-3 bg-green-700 text-green-100 rounded-lg font-semibold text-sm">
+              <div className="px-4 py-3 bg-green-700 text-white rounded-lg font-semibold text-sm">
                 🎉 All words found!
               </div>
             </div>
@@ -125,10 +125,10 @@ export default function PuzzleScreen({
                         isCellSelected(rowIndex, colIndex)
                           ? "bg-blue-500/50"
                           : isCellInRevealedWord(rowIndex, colIndex)
-                          ? "bg-yellow-400/50"
+                          ? "bg-yellow-200/50"
                           : isCellInFoundWord(rowIndex, colIndex)
                           ? "bg-green-500/50"
-                          : "bg-gray-700 hover:bg-gray-600"
+                          : "bg-gray-700 hover:bg-gray-800"
                       }`}
                       onMouseDown={() => onMouseDown(rowIndex, colIndex)}
                       onMouseEnter={() => onMouseEnter(rowIndex, colIndex)}
