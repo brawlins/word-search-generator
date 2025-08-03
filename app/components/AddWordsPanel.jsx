@@ -1,4 +1,6 @@
+import React from "react";
 import { Plus, Search, X } from "lucide-react";
+import { DIRECTION_CONFIG } from "./direction-config";
 
 export default function AddWordsPanel({
   addWord,
@@ -9,12 +11,32 @@ export default function AddWordsPanel({
   setCurrentWord,
   setGridSize,
   words,
+  enabledDirections,
+  setEnabledDirections,
 }) {
+  const handleDirectionToggle = (directionId) => {
+    setEnabledDirections((prev) => ({
+      ...prev,
+      [directionId]: !prev[directionId],
+    }));
+  };
+
+  const handleCheckAll = () => {
+    const allChecked = Object.values(enabledDirections).every((val) => val);
+    const newState = {};
+    DIRECTION_CONFIG.forEach((config) => {
+      newState[config.id] = !allChecked;
+    });
+    setEnabledDirections(newState);
+  };
+
+  const allChecked = Object.values(enabledDirections).every((val) => val);
+  const someChecked = Object.values(enabledDirections).some((val) => val);
+
   return (
-    // Word Input Screen
     <div className="max-w-2xl mx-auto">
       <div className="bg-gray-800 rounded-xl shadow-lg p-8">
-        <h2 className="text-2xl font-semibold mb-6 text-gray text-center">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-100 text-center">
           Add Words
         </h2>
 
@@ -54,6 +76,52 @@ export default function AddWordsPanel({
           </div>
         </div>
 
+        {/* Direction Controls */}
+        <div className="mb-6">
+          <label className="block text-lg font-medium text-gray-300 mb-3">
+            Word Directions
+          </label>
+          <div className="bg-gray-700 rounded-lg p-4">
+            <div className="flex items-center mb-3 pb-3 border-b border-gray-600">
+              <input
+                type="checkbox"
+                id="checkAll"
+                checked={allChecked}
+                ref={(input) => {
+                  if (input) input.indeterminate = someChecked && !allChecked;
+                }}
+                onChange={handleCheckAll}
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <label
+                htmlFor="checkAll"
+                className="ml-2 text-sm font-medium text-gray-200"
+              >
+                {allChecked ? "Uncheck All" : "Check All"}
+              </label>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {DIRECTION_CONFIG.map((config) => (
+                <div key={config.id} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id={config.id}
+                    checked={enabledDirections[config.id]}
+                    onChange={() => handleDirectionToggle(config.id)}
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <label
+                    htmlFor={config.id}
+                    className="ml-2 text-sm text-gray-200"
+                  >
+                    {config.label}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {words.length > 0 && (
           <div className="mb-6">
             <h3 className="text-lg font-medium text-gray-300 mb-3">
@@ -80,7 +148,7 @@ export default function AddWordsPanel({
 
         <button
           onClick={generateGrid}
-          disabled={words.length === 0}
+          disabled={words.length === 0 || !someChecked}
           className="w-full px-6 py-4 bg-green-700 text-white rounded-lg hover:bg-green-800 disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-3 text-lg font-semibold"
         >
           <Search size={24} />
@@ -90,6 +158,11 @@ export default function AddWordsPanel({
         {words.length === 0 && (
           <p className="text-center text-gray-400 mt-4">
             Add at least one word to generate your puzzle
+          </p>
+        )}
+        {words.length > 0 && !someChecked && (
+          <p className="text-center text-gray-400 mt-4">
+            Select at least one direction to generate your puzzle
           </p>
         )}
       </div>

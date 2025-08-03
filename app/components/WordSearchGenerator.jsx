@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import clsx from "clsx";
+import { DIRECTION_CONFIG } from "./direction-config";
 import AddWordsPanel from "./AddWordsPanel";
 import PuzzleScreen from "./PuzzleScreen";
 
@@ -17,16 +17,20 @@ export default function WordSearchGenerator() {
   const [showPuzzle, setShowPuzzle] = useState(false);
   const [revealedWord, setRevealedWord] = useState(null);
 
-  const directions = [
-    [0, 1], // horizontal
-    [1, 0], // vertical
-    [1, 1], // diagonal down-right
-    [-1, 1], // diagonal up-right
-    [0, -1], // horizontal reverse
-    [-1, 0], // vertical reverse
-    [-1, -1], // diagonal up-left
-    [1, -1], // diagonal down-left
-  ];
+  // New state for enabled directions
+  const [enabledDirections, setEnabledDirections] = useState(() => {
+    const initial = {};
+    DIRECTION_CONFIG.forEach((config) => {
+      initial[config.id] = true; // All directions enabled by default
+    });
+    return initial;
+  });
+
+  const getActiveDirections = () => {
+    return DIRECTION_CONFIG.filter(
+      (config) => enabledDirections[config.id]
+    ).map((config) => config.direction);
+  };
 
   const addWord = () => {
     if (
@@ -80,6 +84,13 @@ export default function WordSearchGenerator() {
   };
 
   const generateGrid = () => {
+    const activeDirections = getActiveDirections();
+
+    if (activeDirections.length === 0) {
+      alert("Please select at least one direction for word placement.");
+      return;
+    }
+
     // Create empty grid
     const newGrid = Array(gridSize)
       .fill()
@@ -96,7 +107,7 @@ export default function WordSearchGenerator() {
 
       while (!placed && attempts < 100) {
         const direction =
-          directions[Math.floor(Math.random() * directions.length)];
+          activeDirections[Math.floor(Math.random() * activeDirections.length)];
         const row = Math.floor(Math.random() * gridSize);
         const col = Math.floor(Math.random() * gridSize);
 
@@ -222,17 +233,13 @@ export default function WordSearchGenerator() {
     <div className="min-h-screen bg-gray-900 p-6">
       <div className="max-w-6xl mx-auto">
         <div
-          className={clsx(
-            "grid",
-            showPuzzle && "lg:grid-cols-4",
-            "gap-8",
-            "text-center",
-            "mb-8"
-          )}
+          className={`grid ${
+            showPuzzle ? "lg:grid-cols-4" : ""
+          } gap-8 text-center mb-8`}
         >
           <div></div>
-          <div className={clsx(showPuzzle && "col-span-3")}>
-            <h1 className="text-4xl font-bold text-gray mb-2">
+          <div className={showPuzzle ? "col-span-3" : ""}>
+            <h1 className="text-4xl font-bold text-gray-100 mb-2">
               Word Search Generator
             </h1>
             <p className="text-gray-300">
@@ -251,6 +258,8 @@ export default function WordSearchGenerator() {
             setCurrentWord={setCurrentWord}
             setGridSize={setGridSize}
             words={words}
+            enabledDirections={enabledDirections}
+            setEnabledDirections={setEnabledDirections}
           />
         ) : (
           <PuzzleScreen
