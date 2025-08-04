@@ -15,8 +15,6 @@ export default function PuzzleScreen({
   onRevealWord,
   onResetPuzzle,
 }) {
-  const getCellKey = (row, col) => `${row}-${col}`;
-
   const isCellSelected = (row, col) => {
     return selectedCells.some((cell) => cell.row === row && cell.col === col);
   };
