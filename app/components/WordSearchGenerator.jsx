@@ -230,8 +230,8 @@ export default function WordSearchGenerator() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 px-4 py-6 sm:px-6 lg:px-8 m-auto">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-slate-900 px-4 py-6 sm:px-6 lg:px-8 mx-auto">
+      <div className="max-w-7xl mx-auto p-0 lg:p-8 border-0 lg:border-2 rounded-2xl border-gray-500">
         {/* Header - Mobile-first responsive */}
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
