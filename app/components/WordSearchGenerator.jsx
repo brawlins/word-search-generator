@@ -230,14 +230,14 @@ export default function WordSearchGenerator() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 px-4 py-6 sm:px-6 lg:px-8 m-auto">
+    <div className="min-h-screen bg-slate-900 px-4 py-6 sm:px-6 lg:px-8 m-auto">
       <div className="max-w-7xl mx-auto">
         {/* Header - Mobile-first responsive */}
         <div className="text-center mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-100 mb-2">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
             Word Search Generator
           </h1>
-          <p className="text-sm sm:text-base text-gray-300">
+          <p className="text-sm sm:text-base text-slate-300">
             Create your own custom word search puzzle
           </p>
         </div>
