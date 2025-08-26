@@ -9,7 +9,7 @@ export default function WordSearchGenerator() {
   const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState("");
   const [grid, setGrid] = useState([]);
-  const [gridSize, setGridSize] = useState(15);
+  const [gridSize, setGridSize] = useState(10);
   const [placedWords, setPlacedWords] = useState([]);
   const [foundWords, setFoundWords] = useState(new Set());
   const [selectedCells, setSelectedCells] = useState([]);
