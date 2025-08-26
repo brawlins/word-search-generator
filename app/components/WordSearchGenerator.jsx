@@ -16,6 +16,7 @@ export default function WordSearchGenerator() {
   const [isSelecting, setIsSelecting] = useState(false);
   const [showPuzzle, setShowPuzzle] = useState(false);
   const [revealedWord, setRevealedWord] = useState(null);
+  const [startCell, setStartCell] = useState(null);
 
   // New state for enabled directions
   const [enabledDirections, setEnabledDirections] = useState(() => {
@@ -138,28 +139,89 @@ export default function WordSearchGenerator() {
     setShowPuzzle(true);
   };
 
-  const handleMouseDown = (row, col) => {
+  // Helper function to get cell coordinates from touch/mouse event
+  const getCellFromEvent = (e) => {
+    const target = e.target;
+    if (!target.dataset.row || !target.dataset.col) return null;
+    return {
+      row: parseInt(target.dataset.row),
+      col: parseInt(target.dataset.col),
+    };
+  };
+
+  // Helper function to get cell from touch coordinates
+  const getCellFromTouch = (touch) => {
+    const element = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (!element || !element.dataset.row || !element.dataset.col) return null;
+    return {
+      row: parseInt(element.dataset.row),
+      col: parseInt(element.dataset.col),
+    };
+  };
+
+  // Unified selection start
+  const startSelection = (row, col) => {
     setIsSelecting(true);
+    setStartCell({ row, col });
     setSelectedCells([{ row, col }]);
   };
 
-  const handleMouseEnter = (row, col) => {
-    if (isSelecting && selectedCells.length > 0) {
-      const start = selectedCells[0];
-      const cells = getLineCells(start.row, start.col, row, col);
-      setSelectedCells(cells);
-    }
+  // Unified selection update
+  const updateSelection = (row, col) => {
+    if (!isSelecting || !startCell) return;
+    const cells = getLineCells(startCell.row, startCell.col, row, col);
+    setSelectedCells(cells);
   };
 
-  const handleMouseUp = () => {
+  // Unified selection end
+  const endSelection = () => {
     if (selectedCells.length > 1) {
       checkSelectedWord();
     }
     setIsSelecting(false);
+    setStartCell(null);
+  };
+
+  // Mouse event handlers
+  const handleMouseDown = (row, col) => {
+    startSelection(row, col);
+  };
+
+  const handleMouseEnter = (row, col) => {
+    if (isSelecting) {
+      updateSelection(row, col);
+    }
+  };
+
+  const handleMouseUp = () => {
+    endSelection();
   };
 
   const handleMouseLeave = () => {
     setIsSelecting(false);
+    setStartCell(null);
+  };
+
+  // Touch event handlers
+  const handleTouchStart = (e, row, col) => {
+    e.preventDefault(); // Prevent scrolling
+    startSelection(row, col);
+  };
+
+  const handleTouchMove = (e) => {
+    e.preventDefault(); // Prevent scrolling
+    if (!isSelecting) return;
+
+    const touch = e.touches[0];
+    const cell = getCellFromTouch(touch);
+    if (cell) {
+      updateSelection(cell.row, cell.col);
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    e.preventDefault();
+    endSelection();
   };
 
   const getLineCells = (startRow, startCol, endRow, endCol) => {
@@ -219,6 +281,7 @@ export default function WordSearchGenerator() {
     setSelectedCells([]);
     setShowPuzzle(false);
     setRevealedWord(null);
+    setStartCell(null);
   };
 
   const revealWord = (wordToReveal) => {
@@ -268,6 +331,9 @@ export default function WordSearchGenerator() {
             onMouseEnter={handleMouseEnter}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseLeave}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
             onRevealWord={revealWord}
             onResetPuzzle={resetPuzzle}
           />

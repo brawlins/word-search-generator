@@ -12,6 +12,9 @@ export default function PuzzleScreen({
   onMouseEnter,
   onMouseUp,
   onMouseLeave,
+  onTouchStart,
+  onTouchMove,
+  onTouchEnd,
   onRevealWord,
   onResetPuzzle,
 }) {
@@ -122,11 +125,15 @@ export default function PuzzleScreen({
                 gap: "1px",
               }}
               onMouseLeave={onMouseLeave}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
             >
               {grid.map((row, rowIndex) =>
                 row.map((cell, colIndex) => (
                   <div
                     key={`${rowIndex}-${colIndex}`}
+                    data-row={rowIndex}
+                    data-col={colIndex}
                     className={`w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold text-gray-100 cursor-pointer transition-all touch-manipulation ${
                       isCellSelected(rowIndex, colIndex)
                         ? "bg-blue-500/50"
@@ -139,8 +146,7 @@ export default function PuzzleScreen({
                     onMouseDown={() => onMouseDown(rowIndex, colIndex)}
                     onMouseEnter={() => onMouseEnter(rowIndex, colIndex)}
                     onMouseUp={onMouseUp}
-                    onTouchStart={() => onMouseDown(rowIndex, colIndex)}
-                    onTouchEnd={onMouseUp}
+                    onTouchStart={(e) => onTouchStart(e, rowIndex, colIndex)}
                   >
                     {cell}
                   </div>
